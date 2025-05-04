@@ -25,7 +25,7 @@ Because in this arena — it does.
 | Action         | Key        |
 |----------------|------------|
 | Move           | W / A / S / D |
-| Dash           | Shift      |
+| Dash           | Mouse Button 3      |
 | Attack         | Mouse Button 1|
 | Quit           | ESC        |
 | Start Game     | SPACEBAR   |
