@@ -20,7 +20,6 @@ player_lost = False
 # pygame.mixer.Sound.set_volume(0.5)
 
 # music_time = False
-
 class Player():
     def __init__(self,screen,width,height):
         self.screen = screen
@@ -42,7 +41,7 @@ class Player():
         self.squezed_size = 6
         self.x = 400
         self.y = 400
-        self.player_speed = 8
+        self.player_speed = 12
 
         self.dash_condition = False
         self.movement_x = None
@@ -267,7 +266,7 @@ class Enemies():
         self.blade = blade
         self.x = x
         self.y = y
-        self.enemy_speed = random.uniform(0.50,2.00)
+        self.enemy_speed = random.uniform(1.00,3.00)
         self.squezed_size = 6
         self.animation_speed = 0.2
         self.current_image = 0
@@ -403,17 +402,17 @@ def append_enemies():
     for _ in range(i):
         direction = random.choice(['left', 'right', 'up', 'down'])
         if direction == 'left':
-            x = random.randint(-800, 0)
+            x = random.randint(width - (width+600), 0)
             y = random.randint(0, height)
         elif direction == 'right':
-            x = random.randint(width, width + 800)
+            x = random.randint(width, width + 600)
             y = random.randint(0, height)
         elif direction == 'up':
             x = random.randint(0, width)
-            y = random.randint(-800, 0)
+            y = random.randint(width - (width+600), 0)
         elif direction == 'down':
             x = random.randint(0, width)
-            y = random.randint(height, height + 800)
+            y = random.randint(height, height + 600)
 
         enemy = Enemies(player, blade, x, y)
         enemies.append(enemy)
