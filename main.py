@@ -1,11 +1,15 @@
 import pygame
 import math
 from math import sqrt
+from pyautogui import size
 import random
 pygame.init()
 pygame.mixer.init()
-size = width,height = 1920,1000
-screen = pygame.display.set_mode(size)
+
+
+width,height = size()
+height = height -100 
+screen = pygame.display.set_mode((width,height))
 clock = pygame.time.Clock()
 pygame.mixer.music.load('assets/sounds/bg_music.wav')
 pygame.mixer.music.set_volume(0.1)
@@ -20,7 +24,6 @@ player_lost = False
 # pygame.mixer.Sound.set_volume(0.5)
 
 # music_time = False
-
 class Player():
     def __init__(self,screen,width,height):
         self.screen = screen
@@ -28,6 +31,7 @@ class Player():
         self.height = height 
         self.total_hp = 5
         self.font = pygame.font.Font('assets/fonts/Pixeltype.ttf',60)
+        self.dash_sound = pygame.mixer.Sound('assets/sounds/hero_dash.wav')
 
         self.idle_right = []
         self.idle_left = []
@@ -42,7 +46,7 @@ class Player():
         self.squezed_size = 6
         self.x = 400
         self.y = 400
-        self.player_speed = 8
+        self.player_speed = 12
 
         self.dash_condition = False
         self.movement_x = None
@@ -267,7 +271,7 @@ class Enemies():
         self.blade = blade
         self.x = x
         self.y = y
-        self.enemy_speed = random.uniform(0.50,2.00)
+        self.enemy_speed = random.uniform(1.00,3.00)
         self.squezed_size = 6
         self.animation_speed = 0.2
         self.current_image = 0
@@ -403,17 +407,17 @@ def append_enemies():
     for _ in range(i):
         direction = random.choice(['left', 'right', 'up', 'down'])
         if direction == 'left':
-            x = random.randint(-800, 0)
+            x = random.randint(width - (width+600), 0)
             y = random.randint(0, height)
         elif direction == 'right':
-            x = random.randint(width, width + 800)
+            x = random.randint(width, width + 600)
             y = random.randint(0, height)
         elif direction == 'up':
             x = random.randint(0, width)
-            y = random.randint(-800, 0)
+            y = random.randint(width - (width+600), 0)
         elif direction == 'down':
             x = random.randint(0, width)
-            y = random.randint(height, height + 800)
+            y = random.randint(height, height + 600)
 
         enemy = Enemies(player, blade, x, y)
         enemies.append(enemy)
@@ -430,7 +434,6 @@ def enemy_hit():
         
         player.x = width/2
         player.y = height/2
-
 
 while True:
     if deco.game_start:
@@ -492,6 +495,8 @@ while True:
         if not music_play:
                 pygame.mixer.music.play(-1, 0.0)  # Start playing the music loop
                 music_play = True
+                if player.dash_condition:
+                    player.dash_sound.play()
 
         keys = pygame.key.get_pressed()
         player.update()
@@ -508,6 +513,8 @@ while True:
 
         if player.dash_condition:
             player.dash()
+            player.dash_sound.play()
+
 
         if len(enemies) <=0:
             i += 5
